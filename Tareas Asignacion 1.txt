@@ -1,0 +1,119 @@
+Simbolos 
+* Listo *
+** En proceso **
+*** Falta ***
+
+Intentar que en cada cambio que se realize en Parser intentar que se haga para el AST
+
+Cambiar sintaxis con recursión a la izquierda *** FALTA ***
+
+
+Agregar tokens y simbolos * Kevin lo implementó *
+
+Nothing ya está implementado en singleCommand * Kevin lo implemento *
+
+Let ya está implementado en singleCommand * Kevin lo implemento * 
+
+If then elsif then else end en singleCommand ** Kevin lo esta implementando **
+
+Factorizar loop en singleCommand  * Madri lo implemento *
+
+Modificar Declaration en el código (en el Word se cambió) *MADRI lo implemento*
+
+Añadir compound-Declaration *MADRI lo implemento*
+(declaración de funciones y procedimientos mutuamente recursivos, declaraciones locales)
+
+Añadir reglas*MADRI lo implemento*
+  Proc-Func  *MADRI lo implemento*
+
+  Proc-Funcs  *MADRI lo implemento*
+
+Modificar single-Command por Command en single-Declaration *MADRI lo implemento*
+
+Agregar "var" Identifier ":=" Expression en single-Declaration *MADRI lo implemento*
+
+
+
+Adición de paquetes (packages)
+
+Modificar Program con Program ::= (Package-Declaration ";")* Command *MADRI lo implemento*
+
+Añadir
+  Package-Declaration ::= "package" Package-Identifier "~"
+ 				    Declaration "end"      *MADRI lo implemento*
+
+  Package-Identifier ::= Identifier *MADRI lo implemento*
+
+
+
+
+  Long-Identifier ::= [ Package-Identifier "$" ] Identifier *MADRI lo implemento*
+
+Modificar V-name con:
+
+  V-name ::= [ Package-Identifier "$" ] Var-Name   *** FALTA ***
+
+  Var-name ::=  Identifier
+           | 	Var-name "." Identifier
+           | 	Var-name "[" Expression "]"    *** FALTA ***
+
+
+
+
+Modificar Type-denoter con:
+Type-denoter ::= Long-Identifier
+  | "array" Integer-Literal "of" Type-denoter
+  | "record" Record-Type-denoter "end"      *MADRI lo implemento*
+
+
+
+
+
+PROCESOS Y SALIDAS
+
+generar un archivo HTML con el texto fuente del programa *** FALTA ***
+
+se debe ver la nueva sintaxis en el IDE *** FALTA ***
+
+debe crear una representación en XML para el árbol de sintaxis abstracta *** FALTA ***
+
+
+Documentacion  *** FALTA TODO ***
+
+Crear documento
+
+Su esquema para el manejo del texto fuente
+
+Modificaciones hechas al analizador de léxico
+
+Cambios hechos a los tokens y a cualquier otra estructura de datos
+
+Explicación su estrategia para generar la versión HTML del texto del programa fuente.
+
+Cambio realizado a las reglas sintácticas de  extendido, para lograr que tenga una gramática LL(1)
+
+Documente la sintaxis y el léxico de  extendido, una vez que tenga la gramática LL(1).
+
+Nuevas rutinas de reconocimiento sintáctico, así como cualquier modificación a las existentes.
+
+Lista de nuevos errores sintácticos detectados.
+
+Modelaje realizado para los árboles sintácticos.
+
+Extensión realizada a los métodos que permiten visualizar los árboles sintácticos abstractos.(IDE)
+
+Extensión realizada a los métodos que permiten representar los árboles sintácticos abstractos como texto en 
+XML.
+
+Plan de pruebas para validar el compilador.
+
+Una reflexión sobre la experiencia de modificar fragmentos de un compilador.
+
+Descripcion tareas por miembro.
+
+Indicar cómo debe compilarse su programa.
+Indicar cómo debe ejecutarse su programa.
+
+Archivos con el texto fuente de su compilador. Con buenos comentarios
+
+El compilador debe estar en un formato ejecutable 

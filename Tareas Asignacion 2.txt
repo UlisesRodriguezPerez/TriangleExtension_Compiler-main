@@ -1,0 +1,27 @@
+Compiladores
+Asignación 2: Análisis contextual
+
+- Comprobación de los tipos para todas las variantes de loop … end.
+
+- Manejo de alcance, del tipo y de la protección de la variable de control del 
+loop for … end.
+
+- Procesamiento de la declaración de variable inicializada (var Id := Exp).
+
+- Validación de la unicidad (no repetición) de los nombres de parámetros en las declaraciones de 
+funciones o procedimientos.
+
+- Procesamiento de la declaración compuesta private. Interesa que la primera 
+declaración (antes del in) introduzca identificadores que son conocidos privadamente (localmente) por la 
+segunda declaración (después del in); al finalizar, se "exporta" solamente lo introducido por la segunda 
+declaración.
+
+- Procesamiento de la declaración compuesta recursive. Interesa la no-repetición de los 
+identificadores función o de procedimiento (Proc-Funcs) declarados por esa declaración compuesta y que 
+estos identificadores sean conocidos en los cuerpos de todas las declaraciones de funciones o 
+procedimientos (Proc-Funcs) que aparecen en una misma declaración compuesta recursive. 
+
+- Manejo de las declaraciones package y el acceso a las entidades allí declaradas,
+desde dentro o desde fuera del paquete.
+
+

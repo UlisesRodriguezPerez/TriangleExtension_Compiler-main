@@ -1,0 +1,191 @@
+----------------------------Cambios lexicos-------------------------------------
+
+AGREGAR PALABRAS RESERVADAS: 
+	choose, for, from, loop, par, pass, private, recursive, to, until, when  en TOKEN.java
+
+AGREGAR ALTERNATIVAS: | ::= $  en TOKEN.java
+
+QUITAR begin
+
+
+---------------------------Cambios sintacticos-----------------------------------
+
+
+-Command: Se elimina recursividad izquierda
+
+	Antes:
+		Command ::= single-Command | Command ";" single-Command
+
+	Ahora:
+		Command ::= single-Command (";" Commnand)*
+
+-Single-Commmand: se factorizan las reglas
+
+	Antes:
+		single-Command 		::=		
+							|		V-name ":=" Expression
+							|		Identifier ( Actual-Parameter-Sequence )
+							|		"loop" "while" Expression "do" Commnand "end"
+							|		"loop" "until" Expression "do" Commnand "end"
+							|		"loop" "do" Commnand "while" Expression "end"
+							|		"loop" "do" Commnand "until" Expression "end"
+							|		"loop" "for" Identifier "from" Expression "to" Expression 
+										"do" Commnand "end"
+							|		"loop" "for" Identifier "from" Expression "to" Expression
+										"while" Expression "do" Commnand "end"
+							|		"loop for" Identifier "from" Expression "to" Expression
+										"until" Expression "do" Commnand "end"
+							|		"let" Declaration "in" Commnand "end"
+							|		"if" Expression "then" Command ("elsif" Expression "then" Command)*
+									"else" Command "end"
+							|		"choose" Expression "from" Cases "end"
+		
+		** Factorizacion aplicada **
+		A 	::= 	"do" Commnand "end" 
+				|	"while" Expression "do" Commnand "end" 
+				|	"until" Expression "do" Commnand "end"
+
+		A2 	::=		"while" Expression "end"
+				|	"until" Expression "end"
+
+		A3  ::=		"do" A2 
+				|	"for" Identifier "from" Expression "to" Expression A1
+				|	"until" Expression "do" Commnand "end"
+				|	"while" Expression "do" Commnand "end"
+	
+
+	Después 3:
+		
+
+		single-Command 		::=			"nothing"
+							|	V-name ":=" Expression
+							|	Identifier ( Actual-Parameter-Sequence )
+							|	"loop" loop-Cases'''
+							|	"let" Declaration "in" Commnand "end"
+							|	"if" Expression "then" Command RestOfIf
+							|	"choose" Expression "from" Cases "end"
+
+  		
+		RestOfIf      		::			"elsif" Expression "then" Command RestOfIf
+							| 	"else" Command "end"
+		
+		loop-Command' 		::= 			"do" Command "end"
+                   					| "while" Expression "do" Command "end"
+                   					| "until" Expression "do" Command "end"
+
+ 		loop-Expression'' 	::= 			"while" Expression "end"
+                   					| "until" Expression "end"
+		
+		loop-Cases''' ::= 			"do" Command loop-Expression''
+                   					| "for" Identifier "from" Expression "to" Expression loop-Command'
+                   					| "while" Expression "do" Command "end"
+                   					| "until" Expression "do" Command "end"
+
+
+		
+	Despues 2
+
+		single-Command 		::=		
+							|		V-name ":=" Expression
+							|		Identifier ( Actual-Parameter-Sequence )
+							|		"loop" loopCommand "end" 
+							|		"let" Declaration "in" Commnand "end"
+							|		"if" Expression "then" Command ("elsif" Expression "then" Command)* "else" Command "end"
+							|		"choose" Expression "from" Cases "end"
+
+		loopCommand 	:=		whileOrUntilCommand "do" Commnand
+							|	"do" Commnand whileOrUntilCommand  
+							|	"for" Identifier "from" Expression "to" Expression ForComplementCommand
+
+		ForComplementCommand 		:= 		 "do" Commnand 
+										|	 whileOrUntilCommand "do" Commnand
+
+		whileOrUntilCommand 		:= 		"while" Expression 
+										| 	"until" Expression
+
+	Despues1:
+		single-Command 		::=		
+							|		V-name ":=" Expression
+							|		Identifier ( Actual-Parameter-Sequence )
+							|		"loop" loopCommand
+							|		"let" Declaration "in" Commnand "end"
+							|		"if" Expression "then" Command ("elsif" Expression "then" Command)*
+									"else" Command "end"
+							|		"choose" Expression "from" Cases "end"
+
+		loopComplementCommand 	::= 	"do" Commnand "end" 
+									|	"while" Expression "do" Commnand "end" 
+									|	"until" Expression "do" Commnand "end"
+
+		doUntilWhile 	::=		"while" Expression "end"
+							|	"until" Expression "end"
+
+		loopCommand  ::=		"do" doUntilWhile 
+							|	"for" Identifier "from" Expression "to" Expression loopComplementCommand
+							|	"until" Expression "do" Commnand "end"
+							|	"while" Expression "do" Commnand "end"
+
+
+-Declaration: Se elimina recursividad izquierda
+
+	Antes:
+		Declaration 		::= 		compound-Declaration
+							|		Declaration ";" compound-Declaration
+
+	Despues:
+		Declaration 		::=		compound-Declaration (";" Declaration)*		
+
+-Func-Procs: Se asume las 2 funciones
+	Antes:
+		Proc-Funcs		::= 		Proc-Func ("|" Proc-Func)+
+
+	Despues:
+		Proc-Funcs		::= 		Proc-Func "|" Proc-Func (Proc-Func)*
+
+
+-single-Declaration: se factorizan reglas
+	Antes:
+		single-Declaration	::= 		"const" Identifier "~" Expression
+							|		"var" Identifier ":" Type-denoter
+							|		"var" Identifier "::=" Expression
+							|		"proc" Identifier "(" Formal-Parameter-Sequence ")" 
+										"~" Commnand "end"
+							|		"func" Identifier "(" Formal-Parameter-Sequence  ")"
+										":" Type-denoter "~" Expression
+							|		"type" Identifier "~" Type-denoter
+
+	Despues:
+		single-Declaration	::= 		"const" Identifier "~" Expression
+							|		"var" Identifier (":" Type-denoter | "::=" Expression)
+							|		"proc" Identifier "(" Formal-Parameter-Sequence ")" 
+										"~" Commnand "end"
+							|		"func" Identifier "(" Formal-Parameter-Sequence  ")"
+										":" Type-denoter "~" Expression
+							|		"type" Identifier "~" Type-denoter
+
+-V-name y Var-name: --descripcion
+	Original: 
+		V-name	 		::= 		  Identifier
+			 				| V-name "." Identifier
+			 				| V-name "[" Expression "]"
+	
+	
+	Implementado en Java:
+		V-name	 		::= 		Identifier RestOfVname
+			 				
+		
+		RestOfVname		::= 		   V-name  "." Identifier 
+							|  V-name "[" Expression "]"
+	
+	Despues:
+		V-name	 		::= 		[ Package-Identifier "$" ] Var-Name
+
+		Var-name 		::= 		Identifier RestOfVarName
+
+		RestOfVarName 		::= 	"." Identifier RestOfVarName
+           							| "[" Expression "]" RestOfVarName
+
+-Reglas agruegadas:
+
+----------------------------------------------------------------------------------------------------------
+
